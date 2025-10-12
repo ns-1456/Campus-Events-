@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 using CampusEvents.Models;
+using CampusEvents.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusEvents.Controllers;
 
@@ -11,15 +13,18 @@ public class AccountController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ILogger<AccountController> _logger;
+    private readonly ApplicationDbContext _context;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        ILogger<AccountController> logger)
+        ILogger<AccountController> logger,
+        ApplicationDbContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _logger = logger;
+        _context = context;
     }
 
     // GET: Account/Login
@@ -129,6 +134,59 @@ public class AccountController : Controller
         return View();
     }
 
+    // GET: Account/Profile
+    [Authorize]
+    public async Task<IActionResult> Profile()
+    {
+        var userId = User.Identity?.Name;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var user = await _userManager.FindByNameAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        // Get user's tickets with events
+        var tickets = await _context.Tickets
+            .Include(t => t.Event)
+            .Where(t => t.UserId == user.Id)
+            .OrderByDescending(t => t.IssuedAt)
+            .ToListAsync();
+
+        // Get upcoming events (user has tickets for)
+        var upcomingEvents = tickets
+            .Where(t => t.Event.Date >= DateTime.Today)
+            .Select(t => t.Event)
+            .Distinct()
+            .OrderBy(e => e.Date)
+            .ToList();
+
+        // Get past events (user has tickets for)
+        var pastEvents = tickets
+            .Where(t => t.Event.Date < DateTime.Today)
+            .Select(t => t.Event)
+            .Distinct()
+            .OrderByDescending(e => e.Date)
+            .ToList();
+
+        var viewModel = new ProfileViewModel
+        {
+            User = user,
+            Tickets = tickets,
+            UpcomingEvents = upcomingEvents,
+            PastEvents = pastEvents,
+            TotalTickets = tickets.Count,
+            UpcomingTickets = tickets.Count(t => t.Event.Date >= DateTime.Today),
+            PastTickets = tickets.Count(t => t.Event.Date < DateTime.Today)
+        };
+
+        return View(viewModel);
+    }
+
     private IActionResult RedirectToLocal(string? returnUrl)
     {
         if (Url.IsLocalUrl(returnUrl))
@@ -183,4 +241,16 @@ public class RegisterViewModel
     [Required]
     [Display(Name = "Role")]
     public UserRole Role { get; set; } = UserRole.Student;
+}
+
+// Profile ViewModel
+public class ProfileViewModel
+{
+    public ApplicationUser User { get; set; } = new();
+    public List<Ticket> Tickets { get; set; } = new();
+    public List<Event> UpcomingEvents { get; set; } = new();
+    public List<Event> PastEvents { get; set; } = new();
+    public int TotalTickets { get; set; }
+    public int UpcomingTickets { get; set; }
+    public int PastTickets { get; set; }
 }

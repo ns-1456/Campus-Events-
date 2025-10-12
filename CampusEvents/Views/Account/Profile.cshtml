@@ -1,0 +1,334 @@
+@model CampusEvents.Controllers.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<!-- Profile Header -->
+<section class="py-5 bg-gradient-to-br from-primary to-info text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center me-4">
+                        <i class="bi bi-person-circle text-white fs-1"></i>
+                    </div>
+                    <div>
+                        <h1 class="display-5 fw-bold mb-2">@Model.User.FullName</h1>
+                        <p class="lead mb-2">@Model.User.Role.ToString() Account</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-calendar-check fs-5"></i>
+                                <span>@Model.TotalTickets Total Tickets</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-clock fs-5"></i>
+                                <span>@Model.UpcomingTickets Upcoming Events</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="card card-glass border-0">
+                    <div class="card-body">
+                        <h5 class="fw-semibold mb-3">Quick Stats</h5>
+                        <div class="row g-3 text-center">
+                            <div class="col-6">
+                                <div class="fw-bold text-primary fs-4">@Model.TotalTickets</div>
+                                <div class="text-muted small">Total Tickets</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="fw-bold text-success fs-4">@Model.UpcomingTickets</div>
+                                <div class="text-muted small">Upcoming</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Profile Information -->
+            <div class="col-lg-4">
+                <div class="card card-glass border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <h3 class="h5 fw-semibold mb-4">Profile Information</h3>
+                        
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center p-3 bg-primary bg-opacity-5 rounded-3 mb-3">
+                                <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                    <i class="bi bi-person text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold text-primary">Full Name</div>
+                                    <div class="text-muted">@Model.User.FullName</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center p-3 bg-info bg-opacity-5 rounded-3 mb-3">
+                                <div class="w-10 h-10 bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                    <i class="bi bi-envelope text-info"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold text-info">Email</div>
+                                    <div class="text-muted">@Model.User.Email</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center p-3 bg-success bg-opacity-5 rounded-3 mb-3">
+                                <div class="w-10 h-10 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                    <i class="bi bi-person-badge text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold text-success">Account Type</div>
+                                    <div class="text-muted">@Model.User.Role.ToString()</div>
+                                </div>
+                            </div>
+                            
+                            @if (Model.User.LastLoginAt != DateTime.MinValue)
+                            {
+                                <div class="d-flex align-items-center p-3 bg-warning bg-opacity-5 rounded-3">
+                                    <div class="w-10 h-10 bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="bi bi-clock text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold text-warning">Last Login</div>
+                                        <div class="text-muted">@Model.User.LastLoginAt.ToString("MMM dd, yyyy")</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="/Account/Logout" class="btn btn-outline-danger">
+                                <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tickets and Events -->
+            <div class="col-lg-8">
+                <!-- Upcoming Events -->
+                @if (Model.UpcomingEvents.Any())
+                {
+                    <div class="card card-glass border-0 shadow-lg mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="h5 fw-semibold mb-0">
+                                    <i class="bi bi-calendar-event text-primary me-2"></i>Upcoming Events
+                                </h3>
+                                <span class="badge bg-primary">@Model.UpcomingEvents.Count</span>
+                            </div>
+                            
+                            <div class="row g-3">
+                                @foreach (var eventItem in Model.UpcomingEvents.Take(3))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="card border-0 bg-light bg-opacity-50 h-100">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="fw-semibold mb-0">@eventItem.Title</h6>
+                                                    <span class="badge bg-primary">@eventItem.Category</span>
+                                                </div>
+                                                <p class="text-muted small mb-2">@eventItem.Description.Substring(0, Math.Min(80, eventItem.Description.Length))...</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar me-1"></i>@eventItem.Date.ToString("MMM dd")
+                                                    </small>
+                                                    <a href="/Events/Details/@eventItem.Id" class="btn btn-outline-primary btn-sm">View</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            
+                            @if (Model.UpcomingEvents.Count > 3)
+                            {
+                                <div class="text-center mt-3">
+                                    <a href="/Events" class="btn btn-outline-primary">
+                                        <i class="bi bi-arrow-right me-2"></i>View All Events
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                
+                <!-- Recent Tickets -->
+                @if (Model.Tickets.Any())
+                {
+                    <div class="card card-glass border-0 shadow-lg">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="h5 fw-semibold mb-0">
+                                    <i class="bi bi-ticket-perforated text-success me-2"></i>Recent Tickets
+                                </h3>
+                                <span class="badge bg-success">@Model.Tickets.Count</span>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Event</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var ticket in Model.Tickets.Take(5))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="fw-semibold">@ticket.Event.Title</div>
+                                                    <small class="text-muted">@ticket.Event.Location</small>
+                                                </td>
+                                                <td>
+                                                    <div>@ticket.Event.Date.ToString("MMM dd, yyyy")</div>
+                                                    <small class="text-muted">@ticket.Event.Time.ToString(@"hh\:mm")</small>
+                                                </td>
+                                                <td>
+                                                    @if (ticket.Event.Date >= DateTime.Today)
+                                                    {
+                                                        <span class="badge bg-success">Upcoming</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-secondary">Past</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="/Events/Details/@ticket.Event.Id" class="btn btn-outline-primary btn-sm">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                        <a href="/Events/TicketDetails/@ticket.Id" class="btn btn-outline-success btn-sm">
+                                                            <i class="bi bi-qr-code"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            @if (Model.Tickets.Count > 5)
+                            {
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-outline-primary">
+                                        <i class="bi bi-list me-2"></i>View All Tickets
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Empty State -->
+                    <div class="card card-glass border-0 shadow-lg">
+                        <div class="card-body p-5 text-center">
+                            <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
+                                <i class="bi bi-ticket-perforated text-primary fs-1"></i>
+                            </div>
+                            <h3 class="fw-semibold mb-3">No Tickets Yet</h3>
+                            <p class="text-muted mb-4">You haven't claimed any tickets yet. Start exploring events and get your first ticket!</p>
+                            <a href="/Events" class="btn btn-primary">
+                                <i class="bi bi-calendar-event me-2"></i>Browse Events
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Activity Timeline -->
+@if (Model.Tickets.Any())
+{
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card card-glass border-0 shadow-lg">
+                        <div class="card-body p-4">
+                            <h3 class="h5 fw-semibold mb-4 text-center">
+                                <i class="bi bi-graph-up text-info me-2"></i>Activity Timeline
+                            </h3>
+                            
+                            <div class="timeline">
+                                @foreach (var ticket in Model.Tickets.Take(10))
+                                {
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-primary"></div>
+                                        <div class="timeline-content">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="fw-semibold mb-1">Claimed ticket for @ticket.Event.Title</h6>
+                                                    <p class="text-muted small mb-0">@ticket.Event.Location • @ticket.Event.Date.ToString("MMM dd, yyyy")</p>
+                                                </div>
+                                                <small class="text-muted">@ticket.IssuedAt.ToString("MMM dd")</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--bs-primary);
+    opacity: 0.3;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--bs-primary);
+}
+
+.timeline-content {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+</style>

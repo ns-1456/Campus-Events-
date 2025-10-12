@@ -3,199 +3,132 @@
     ViewData["Title"] = Model.Title;
 }
 
-<!-- Hero Section with Event Image -->
-<section class="position-relative" style="min-height: 60vh;">
-    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-    {
-        <div class="position-absolute inset-0">
-            <img src="@Model.ImageUrl" class="w-100 h-100" alt="@Model.Title" style="object-fit: cover;">
-            <div class="position-absolute inset-0 bg-gradient-to-t from-black bg-opacity-70"></div>
-        </div>
-    }
-    else
-    {
-        <div class="position-absolute inset-0 bg-gradient-to-br from-primary to-info"></div>
-    }
-    
-    <!-- Hero Content -->
-    <div class="position-relative" style="z-index: 10;">
-        <div class="container py-5">
-            <div class="row align-items-end" style="min-height: 50vh;">
-                <div class="col-lg-8">
-                    <div class="text-white">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <span class="badge bg-primary bg-opacity-90 fs-6">@Model.Category</span>
-                            @if (Model.IsFull)
-                            {
-                                <span class="badge bg-danger bg-opacity-90 fs-6">
-                                    <i class="bi bi-x-circle me-1"></i>Event Full
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-success bg-opacity-90 fs-6">
-                                    <i class="bi bi-check-circle me-1"></i>@Model.AvailableTickets Tickets Available
-                                </span>
-                            }
-                        </div>
-                        <h1 class="display-3 fw-bold mb-3">@Model.Title</h1>
-                        <p class="lead mb-4">@Model.Description</p>
-                        <div class="d-flex flex-wrap gap-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-calendar-event fs-5"></i>
-                                <span>@Model.Date.ToString("dddd, MMMM dd, yyyy")</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-clock fs-5"></i>
-                                <span>@Model.Time.ToString(@"hh\:mm tt")</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-geo-alt fs-5"></i>
-                                <span>@Model.Location</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Breadcrumb Navigation -->
+<section class="py-3 bg-secondary">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/Events">Events</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            </ol>
+        </nav>
     </div>
 </section>
 
-<!-- Main Content -->
+<!-- Event Details -->
 <section class="py-5">
     <div class="container">
-        <div class="row g-5">
-            <!-- Event Details -->
+        <div class="row">
+            <!-- Event Information (Left Column) -->
             <div class="col-lg-8">
-                <div class="card card-glass border-0 shadow-lg">
-                    <div class="card-body p-5">
-                        <h2 class="h3 fw-semibold mb-4">Event Information</h2>
-                        
-                        <!-- Event Details Grid -->
-                        <div class="row g-4 mb-5">
-                            <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-primary bg-opacity-5 rounded-3">
-                                    <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="bi bi-calendar-event text-primary"></i>
-                                    </div>
+                <!-- Event Image -->
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-4">
+                        <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@Model.Title">
+                    </div>
+                }
+                
+                <!-- Event Title and Category -->
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <h1 class="mb-0">@Model.Title</h1>
+                    <span class="badge bg-primary fs-6">@Model.Category</span>
+                </div>
+                
+                <!-- Event Description -->
+                <div class="mb-4">
+                    <p class="lead">@Model.Description</p>
+                </div>
+                
+                <!-- Event Details Grid -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-calendar-event text-primary me-3 fs-4"></i>
                                     <div>
-                                        <div class="fw-semibold text-primary">Date</div>
-                                        <div class="text-muted">@Model.Date.ToString("dddd, MMMM dd, yyyy")</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-info bg-opacity-5 rounded-3">
-                                    <div class="w-10 h-10 bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="bi bi-clock text-info"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold text-info">Time</div>
-                                        <div class="text-muted">@Model.Time.ToString(@"hh\:mm tt")</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-success bg-opacity-5 rounded-3">
-                                    <div class="w-10 h-10 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="bi bi-geo-alt text-success"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold text-success">Location</div>
-                                        <div class="text-muted">@Model.Location</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-warning bg-opacity-5 rounded-3">
-                                    <div class="w-10 h-10 bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="bi bi-building text-warning"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold text-warning">Organization</div>
-                                        <div class="text-muted">@Model.Organization</div>
+                                        <h6 class="mb-1">Date</h6>
+                                        <p class="mb-0">@Model.Date.ToString("dddd, MMMM dd, yyyy")</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <h3 class="h5 fw-semibold mb-3">About This Event</h3>
-                            <div class="bg-light bg-opacity-50 p-4 rounded-3">
-                                <p class="mb-0 lead">@Model.Description</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Organizer Info -->
-                        @if (Model.Organizer != null)
-                        {
-                            <div class="card card-glass border-0">
-                                <div class="card-body">
-                                    <h3 class="h5 fw-semibold mb-3">Event Organizer</h3>
-                                    <div class="d-flex align-items-center">
-                                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                            <i class="bi bi-person text-primary fs-5"></i>
-                                        </div>
-                                        <div>
-                                            <div class="fw-semibold">@Model.Organizer.FullName</div>
-                                            <div class="text-muted small">Event Organizer</div>
-                                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-clock text-primary me-3 fs-4"></i>
+                                    <div>
+                                        <h6 class="mb-1">Time</h6>
+                                        <p class="mb-0">@Model.Time.ToString(@"hh\:mm tt")</p>
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-geo-alt text-primary me-3 fs-4"></i>
+                                    <div>
+                                        <h6 class="mb-1">Location</h6>
+                                        <p class="mb-0">@Model.Location</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-building text-primary me-3 fs-4"></i>
+                                    <div>
+                                        <h6 class="mb-1">Organization</h6>
+                                        <p class="mb-0">@Model.Organization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Ticket Sidebar -->
+            <!-- Ticket Information (Right Column) -->
             <div class="col-lg-4">
-                <div class="card card-glass border-0 shadow-lg sticky-top" style="top: 2rem;">
-                    <div class="card-body p-4">
-                        <h3 class="h5 fw-semibold mb-4">Get Your Ticket</h3>
+                <div class="card sticky-top" style="top: 2rem;">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Get Your Ticket</h4>
                         
                         <!-- Capacity Progress -->
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-semibold">Event Capacity</span>
+                                <span class="fw-semibold">Capacity</span>
                                 <span class="text-muted">@Model.TicketsIssued / @Model.Capacity</span>
                             </div>
-                            <div class="progress mb-2" style="height: 10px;">
-                                @{
-                                    var attendanceRate = Model.Capacity > 0 ? (double)Model.TicketsIssued / Model.Capacity * 100 : 0;
-                                    var progressClass = attendanceRate >= 90 ? "bg-danger" : attendanceRate >= 70 ? "bg-warning" : "bg-success";
-                                }
-                                <div class="progress-bar @progressClass" role="progressbar" 
-                                     style="width: @(attendanceRate)%" 
-                                     aria-valuenow="@attendanceRate" 
+                            <div class="progress mb-2">
+                                <div class="progress-bar @(Model.IsFull ? "bg-danger" : "bg-success")" 
+                                     role="progressbar" 
+                                     style="width: @(Model.AttendanceRate)%" 
+                                     aria-valuenow="@Model.AttendanceRate" 
                                      aria-valuemin="0" 
                                      aria-valuemax="100"></div>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <small class="text-muted">@attendanceRate.ToString("F1")% filled</small>
-                                <small class="text-muted">@Model.AvailableTickets available</small>
-                            </div>
+                            <small class="text-muted">@Model.AttendanceRate.ToString("F1")% filled</small>
                         </div>
                         
-                        <!-- Ticket Status -->
+                        <!-- Available Tickets -->
                         <div class="mb-4">
-                            @if (Model.IsFull)
-                            {
-                                <div class="alert alert-danger border-0">
-                                    <i class="bi bi-x-circle me-2"></i>
-                                    <strong>Event Full</strong><br>
-                                    <small>Sorry, this event has reached maximum capacity.</small>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="alert alert-success border-0">
-                                    <i class="bi bi-check-circle me-2"></i>
-                                    <strong>Tickets Available</strong><br>
-                                    <small>@Model.AvailableTickets tickets remaining</small>
-                                </div>
-                            }
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">Available</span>
+                                <span class="badge @(Model.AvailableTickets > 0 ? "bg-success" : "bg-danger")">
+                                    @Model.AvailableTickets tickets
+                                </span>
+                            </div>
                         </div>
                         
                         <!-- Action Buttons -->
@@ -213,7 +146,7 @@
                                     <form method="post" action="/Events/ClaimTicket/@Model.Id">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-primary btn-lg">
-                                            <i class="bi bi-ticket-perforated me-2"></i>Claim Free Ticket
+                                            <i class="bi bi-ticket-perforated me-2"></i>Claim Ticket
                                         </button>
                                     </form>
                                 }
@@ -225,27 +158,20 @@
                                 </a>
                             }
                             
-                            <a href="/Events" class="btn btn-outline-primary">
+                            <a href="/Events" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Back to Events
-                            </a>
-                            
-                            <a href="/" class="btn btn-outline-secondary">
-                                <i class="bi bi-house me-2"></i>Back to Home
                             </a>
                         </div>
                         
-                        <!-- Event Stats -->
-                        <hr class="my-4">
-                        <div class="row g-3 text-center">
-                            <div class="col-6">
-                                <div class="fw-bold text-primary fs-4">@Model.Capacity</div>
-                                <div class="text-muted small">Total Capacity</div>
+                        <!-- Event Organizer -->
+                        @if (Model.Organizer != null)
+                        {
+                            <hr class="my-4">
+                            <div class="text-center">
+                                <small class="text-muted">Organized by</small>
+                                <div class="fw-semibold">@Model.Organizer.FullName</div>
                             </div>
-                            <div class="col-6">
-                                <div class="fw-bold text-success fs-4">@Model.TicketsIssued</div>
-                                <div class="text-muted small">Tickets Issued</div>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -257,12 +183,13 @@
 @if (TempData["Success"] != null)
 {
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div class="toast show" role="alert">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="bi bi-check-circle me-2"></i>
                 <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
+            <div class="toast-body bg-dark text-white">
                 @TempData["Success"]
             </div>
         </div>
@@ -272,14 +199,16 @@
 @if (TempData["Error"] != null)
 {
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div class="toast show" role="alert">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-danger text-white">
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
+            <div class="toast-body bg-dark text-white">
                 @TempData["Error"]
             </div>
         </div>
     </div>
+}
 }

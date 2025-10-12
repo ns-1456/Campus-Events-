@@ -3,160 +3,61 @@
     ViewData["Title"] = "Sign Up";
 }
 
-<!-- Hero Section -->
-<section class="py-5 bg-gradient-to-br from-success to-info text-white">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-                    <i class="bi bi-person-plus text-white fs-1"></i>
-                </div>
-                <h1 class="display-4 fw-bold mb-3">Join Campus Events</h1>
-                <p class="lead mb-0">Create your account and start discovering amazing campus events today</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Registration Form Section -->
+<!-- Registration Form -->
 <section class="py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card card-glass border-0 shadow-lg">
+            <div class="col-md-6 col-lg-5">
+                <div class="card">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <div class="w-12 h-12 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                                <i class="bi bi-person-plus text-success fs-4"></i>
-                            </div>
-                            <h2 class="h4 fw-semibold mb-2">Create Your Account</h2>
-                            <p class="text-muted">Fill in your details to get started</p>
+                            <h1 class="h3 mb-3">Create Account</h1>
+                            <p class="text-muted">Join the campus community today</p>
                         </div>
 
-                        <form method="post" class="needs-validation" novalidate>
+                        <form method="post">
                             @Html.AntiForgeryToken()
                             
-                            <div class="row g-3">
-                                <!-- Full Name Field -->
-                                <div class="col-12">
-                                    <label asp-for="FullName" class="form-label fw-semibold">
-                                        <i class="bi bi-person me-2"></i>Full Name
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
-                                            <i class="bi bi-person text-muted"></i>
-                                        </span>
-                                        <input asp-for="FullName" class="form-control border-start-0 bg-transparent" 
-                                               placeholder="Enter your full name" required />
-                                    </div>
-                                    <span asp-validation-for="FullName" class="text-danger small"></span>
-                                </div>
-
-                                <!-- Email Field -->
-                                <div class="col-12">
-                                    <label asp-for="Email" class="form-label fw-semibold">
-                                        <i class="bi bi-envelope me-2"></i>Email Address
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
-                                            <i class="bi bi-envelope text-muted"></i>
-                                        </span>
-                                        <input asp-for="Email" class="form-control border-start-0 bg-transparent" 
-                                               placeholder="Enter your email address" required />
-                                    </div>
-                                    <span asp-validation-for="Email" class="text-danger small"></span>
-                                </div>
-
-                                <!-- Password Field -->
-                                <div class="col-md-6">
-                                    <label asp-for="Password" class="form-label fw-semibold">
-                                        <i class="bi bi-lock me-2"></i>Password
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
-                                            <i class="bi bi-lock text-muted"></i>
-                                        </span>
-                                        <input asp-for="Password" class="form-control border-start-0 bg-transparent" 
-                                               placeholder="Create a password" required />
-                                    </div>
-                                    <span asp-validation-for="Password" class="text-danger small"></span>
-                                </div>
-
-                                <!-- Confirm Password Field -->
-                                <div class="col-md-6">
-                                    <label asp-for="ConfirmPassword" class="form-label fw-semibold">
-                                        <i class="bi bi-lock-fill me-2"></i>Confirm Password
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
-                                            <i class="bi bi-lock-fill text-muted"></i>
-                                        </span>
-                                        <input asp-for="ConfirmPassword" class="form-control border-start-0 bg-transparent" 
-                                               placeholder="Confirm your password" required />
-                                    </div>
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
-                                </div>
-
-                                <!-- Role Selection -->
-                                <div class="col-12">
-                                    <label asp-for="Role" class="form-label fw-semibold">
-                                        <i class="bi bi-person-badge me-2"></i>Account Type
-                                    </label>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card border-2 @(Model.Role == CampusEvents.Models.UserRole.Student ? "border-primary bg-primary bg-opacity-5" : "border-light") h-100">
-                                                <div class="card-body text-center p-3">
-                                                    <input asp-for="Role" type="radio" value="@CampusEvents.Models.UserRole.Student" 
-                                                           class="form-check-input" style="display: none;" />
-                                                    <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2">
-                                                        <i class="bi bi-mortarboard text-primary"></i>
-                                                    </div>
-                                                    <h6 class="fw-semibold mb-1">Student</h6>
-                                                    <small class="text-muted">Discover and attend events</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-2 @(Model.Role == CampusEvents.Models.UserRole.Organizer ? "border-primary bg-primary bg-opacity-5" : "border-light") h-100">
-                                                <div class="card-body text-center p-3">
-                                                    <input asp-for="Role" type="radio" value="@CampusEvents.Models.UserRole.Organizer" 
-                                                           class="form-check-input" style="display: none;" />
-                                                    <div class="w-10 h-10 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2">
-                                                        <i class="bi bi-calendar-event text-success"></i>
-                                                    </div>
-                                                    <h6 class="fw-semibold mb-1">Organizer</h6>
-                                                    <small class="text-muted">Create and manage events</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span asp-validation-for="Role" class="text-danger small"></span>
-                                </div>
+                            <div class="mb-3">
+                                <label asp-for="FullName" class="form-label">Full Name</label>
+                                <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
 
-                            <!-- Submit Button -->
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-success btn-lg py-3">
-                                    <i class="bi bi-person-plus me-2"></i>Create Account
-                                </button>
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">Email Address</label>
+                                <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">Password</label>
+                                <input asp-for="Password" class="form-control" placeholder="Create a password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Role" class="form-label">Account Type</label>
+                                <select asp-for="Role" class="form-select">
+                                    <option value="@CampusEvents.Models.UserRole.Student">Student</option>
+                                    <option value="@CampusEvents.Models.UserRole.Organizer">Event Organizer</option>
+                                </select>
+                                <span asp-validation-for="Role" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
                             </div>
                         </form>
 
-                        <!-- Divider -->
-                        <div class="text-center mt-4">
-                            <div class="d-flex align-items-center">
-                                <hr class="flex-grow-1">
-                                <span class="px-3 text-muted small">OR</span>
-                                <hr class="flex-grow-1">
-                            </div>
-                        </div>
-
-                        <!-- Login Link -->
                         <div class="text-center">
-                            <p class="text-muted mb-0">Already have an account?</p>
-                            <a href="/Account/Login" class="btn btn-outline-primary mt-2">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In Instead
-                            </a>
+                            <p class="text-muted">Already have an account? <a href="/Account/Login" class="text-decoration-none">Sign in here</a></p>
                         </div>
                     </div>
                 </div>
@@ -165,101 +66,6 @@
     </div>
 </section>
 
-<!-- Benefits Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-3 col-6 text-center">
-                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                    <i class="bi bi-calendar-event text-primary fs-4"></i>
-                </div>
-                <h6 class="fw-semibold mb-2">Discover Events</h6>
-                <p class="text-muted small">Find amazing campus events</p>
-            </div>
-            <div class="col-md-3 col-6 text-center">
-                <div class="w-12 h-12 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                    <i class="bi bi-ticket-perforated text-success fs-4"></i>
-                </div>
-                <h6 class="fw-semibold mb-2">Free Tickets</h6>
-                <p class="text-muted small">Get tickets with QR codes</p>
-            </div>
-            <div class="col-md-3 col-6 text-center">
-                <div class="w-12 h-12 bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                    <i class="bi bi-people text-info fs-4"></i>
-                </div>
-                <h6 class="fw-semibold mb-2">Join Community</h6>
-                <p class="text-muted small">Connect with students</p>
-            </div>
-            <div class="col-md-3 col-6 text-center">
-                <div class="w-12 h-12 bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                    <i class="bi bi-star text-warning fs-4"></i>
-                </div>
-                <h6 class="fw-semibold mb-2">Track Activity</h6>
-                <p class="text-muted small">Monitor your events</p>
-            </div>
-        </div>
-    </div>
-</section>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    <script>
-        // Add form validation styling
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-        
-        // Role selection styling
-        document.querySelectorAll('input[name="Role"]').forEach(function(radio) {
-            radio.addEventListener('change', function() {
-                // Remove active styling from all cards
-                document.querySelectorAll('.card').forEach(function(card) {
-                    card.classList.remove('border-primary', 'bg-primary', 'bg-opacity-5');
-                    card.classList.add('border-light');
-                });
-                
-                // Add active styling to selected card
-                const selectedCard = this.closest('.card');
-                selectedCard.classList.remove('border-light');
-                selectedCard.classList.add('border-primary', 'bg-primary', 'bg-opacity-5');
-            });
-        });
-        
-        // Add loading state to submit button
-        document.querySelector('form').addEventListener('submit', function() {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Creating Account...';
-            submitBtn.disabled = true;
-        });
-        
-        // Password strength indicator
-        document.querySelector('input[name="Password"]').addEventListener('input', function() {
-            const password = this.value;
-            const strength = getPasswordStrength(password);
-            // You can add visual feedback here
-        });
-        
-        function getPasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (/[a-z]/.test(password)) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            return strength;
-        }
-    </script>
 }

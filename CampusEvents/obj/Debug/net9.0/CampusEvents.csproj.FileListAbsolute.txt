@@ -222,4 +222,4 @@
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/CampusEvents.pdb
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/CampusEvents.genruntimeconfig.cache
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/ref/CampusEvents.dll
-/Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/l00bd8qfsw-nk2oxfwhsn.gz
+/Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/l00bd8qfsw-a1p89a515c.gz

@@ -1,0 +1,170 @@
+@model CampusEvents.Models.Event
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Event Image -->
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-4">
+                    <img src="@Model.ImageUrl" class="img-fluid rounded shadow" alt="@Model.Title" style="width: 100%; height: 400px; object-fit: cover;">
+                </div>
+            }
+            
+            <!-- Event Details -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h1 class="display-5 fw-bold mb-3">@Model.Title</h1>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-calendar-event text-primary me-2"></i>
+                                <strong>Date:</strong>
+                                <span class="ms-2">@Model.Date.ToString("dddd, MMMM dd, yyyy")</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-clock text-primary me-2"></i>
+                                <strong>Time:</strong>
+                                <span class="ms-2">@Model.Time.ToString(@"hh\:mm tt")</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-geo-alt text-primary me-2"></i>
+                                <strong>Location:</strong>
+                                <span class="ms-2">@Model.Location</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-building text-primary me-2"></i>
+                                <strong>Organization:</strong>
+                                <span class="ms-2">@Model.Organization</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <span class="badge bg-primary fs-6">@Model.Category</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4>Description</h4>
+                        <p class="lead">@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Ticket Information -->
+            <div class="card border-0 shadow-sm sticky-top" style="top: 2rem;">
+                <div class="card-body">
+                    <h4 class="card-title">Event Details</h4>
+                    
+                    <!-- Capacity Progress -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-semibold">Capacity</span>
+                            <span class="text-muted">@Model.TicketsIssued / @Model.Capacity</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar @(Model.IsFull ? "bg-danger" : "bg-success")" 
+                                 role="progressbar" 
+                                 style="width: @(Model.AttendanceRate)%" 
+                                 aria-valuenow="@Model.AttendanceRate" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">@Model.AttendanceRate.ToString("F1")% filled</small>
+                    </div>
+                    
+                    <!-- Available Tickets -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">Available Tickets</span>
+                            <span class="badge @(Model.AvailableTickets > 0 ? "bg-success" : "bg-danger")">
+                                @Model.AvailableTickets
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            @if (Model.IsFull)
+                            {
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="bi bi-x-circle me-2"></i>Event Full
+                                </button>
+                            }
+                            else
+                            {
+                                <form method="post" action="/Events/ClaimTicket/@Model.Id">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-ticket-perforated me-2"></i>Claim Ticket
+                                    </button>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <a href="/Account/Login" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person me-2"></i>Sign In to Get Ticket
+                            </a>
+                        }
+                        
+                        <a href="/Events" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Events
+                        </a>
+                    </div>
+                    
+                    <!-- Event Organizer -->
+                    @if (Model.Organizer != null)
+                    {
+                        <hr>
+                        <div class="text-center">
+                            <small class="text-muted">Organized by</small>
+                            <div class="fw-semibold">@Model.Organizer.FullName</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success/Error Messages -->
+@if (TempData["Success"] != null)
+{
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast show" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Success</strong>
+            </div>
+            <div class="toast-body">
+                @TempData["Success"]
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast show" role="alert">
+            <div class="toast-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <strong class="me-auto">Error</strong>
+            </div>
+            <div class="toast-body">
+                @TempData["Error"]
+            </div>
+        </div>
+    </div>
+}

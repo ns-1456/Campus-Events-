@@ -149,7 +149,6 @@
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/scopedcss/bundle/CampusEvents.styles.css
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/scopedcss/projectbundle/CampusEvents.bundle.scp.css
-/Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/l00bd8qfsw-b9sayid5wm.gz
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/1t22bt7kew-61n19gt1b8.gz
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/4y9kmiwn2p-xtxxf3hu2r.gz
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/zpm4dlod1e-bqjiyaj88i.gz
@@ -223,3 +222,4 @@
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/CampusEvents.pdb
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/CampusEvents.genruntimeconfig.cache
 /Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/ref/CampusEvents.dll
+/Users/ns/Desktop/SOEN-341/Website/CampusEvents/obj/Debug/net9.0/compressed/l00bd8qfsw-nk2oxfwhsn.gz

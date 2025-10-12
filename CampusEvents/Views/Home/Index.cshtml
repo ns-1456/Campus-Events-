@@ -56,11 +56,11 @@
             <!-- Stats -->
             <div class="row g-4 pt-5 animate-fade-in-up" style="animation-delay: 0.6s;">
                 <div class="col-6 col-md-3 text-center">
-                    <div class="display-4 fw-bold text-primary">500+</div>
+                    <div class="display-4 fw-bold text-primary">@ViewBag.TotalEvents</div>
                     <div class="text-muted">Events</div>
                 </div>
                 <div class="col-6 col-md-3 text-center">
-                    <div class="display-4 fw-bold text-primary">10K+</div>
+                    <div class="display-4 fw-bold text-primary">@ViewBag.TotalUsers</div>
                     <div class="text-muted">Students</div>
                 </div>
                 <div class="col-6 col-md-3 text-center">
@@ -86,37 +86,13 @@
     </div>
 </section>
 
-<!-- Statistics Section -->
-<section class="py-5 bg-gradient-to-r from-primary bg-opacity-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-6 col-md-3 text-center">
-                <div class="display-3 fw-bold text-primary">@ViewBag.TotalEvents</div>
-                <div class="text-muted">Total Events</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="display-3 fw-bold text-primary">@ViewBag.UpcomingEvents</div>
-                <div class="text-muted">Upcoming Events</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="display-3 fw-bold text-primary">@ViewBag.TotalTickets</div>
-                <div class="text-muted">Tickets Issued</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="display-3 fw-bold text-primary">@ViewBag.TotalUsers</div>
-                <div class="text-muted">Active Users</div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Featured Events Section -->
-<section class="py-5">
+<section class="py-5 bg-light">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
-                <h2 class="h2 fw-semibold">Featured events</h2>
-                <p class="text-muted">Hand-picked highlights this week</p>
+                <h2 class="h2 fw-semibold mb-2">Featured Events</h2>
+                <p class="text-muted">Handpicked events you don't want to miss</p>
             </div>
             <a href="/Events" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-right me-1"></i>View all
@@ -125,33 +101,39 @@
         <div class="row g-4">
             @if (ViewBag.FeaturedEvents != null)
             {
-                @foreach (var eventItem in (List<Event>)ViewBag.FeaturedEvents.Take(3))
+                var events = (List<Event>)ViewBag.FeaturedEvents;
+                var count = 0;
+                @foreach (var eventItem in events)
                 {
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card card-glass h-100">
-                            @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
-                            {
-                                <div class="position-relative" style="height: 200px;">
-                                    <img src="@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 100%; object-fit: cover;">
-                                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-t from-black bg-opacity-60"></div>
-                                </div>
-                            }
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">@eventItem.Title</h5>
-                                <p class="card-text text-muted flex-grow-1">@eventItem.Description.Substring(0, Math.Min(100, eventItem.Description.Length))...</p>
-                                <div class="mt-auto">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <small class="text-muted">@eventItem.Date.ToString("MMM dd, yyyy")</small>
-                                        <span class="badge badge-primary">@eventItem.Category</span>
+                    @if (count < 3)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card card-glass h-100">
+                                @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                                {
+                                    <div class="position-relative" style="height: 200px;">
+                                        <img src="@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 100%; object-fit: cover;">
+                                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-t from-black bg-opacity-60"></div>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">@eventItem.Location</small>
-                                        <a href="/Events/Details/@eventItem.Id" class="btn btn-outline-primary btn-sm">View Details</a>
+                                }
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@eventItem.Title</h5>
+                                    <p class="card-text text-muted flex-grow-1">@(eventItem.Description.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">@eventItem.Date.ToString("MMM dd, yyyy")</small>
+                                            <span class="badge bg-primary">@eventItem.Category</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">@eventItem.Location</small>
+                                            <a href="/Events/Details/@eventItem.Id" class="btn btn-outline-primary btn-sm">View Details</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    count++;
                 }
             }
             else
@@ -159,7 +141,7 @@
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-calendar-event display-1 text-muted"></i>
                     <h3 class="mt-3">No featured events available</h3>
-                    <p class="text-muted">Check back later for exciting events!</p>
+                    <p class="text-muted">Check back soon for exciting events!</p>
                 </div>
             }
         </div>
@@ -167,7 +149,7 @@
 </section>
 
 <!-- Upcoming Highlights Section -->
-<section class="py-5 border-top">
+<section class="py-5">
     <div class="container">
         <div class="mb-5">
             <h2 class="h2 fw-semibold mb-2">Upcoming Highlights</h2>
@@ -176,27 +158,33 @@
         <div class="d-flex gap-4 overflow-auto pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
             @if (ViewBag.FeaturedEvents != null)
             {
-                @foreach (var eventItem in (List<Event>)ViewBag.FeaturedEvents.Take(5))
+                var events = (List<Event>)ViewBag.FeaturedEvents;
+                var count = 0;
+                @foreach (var eventItem in events)
                 {
-                    <div class="flex-shrink-0" style="width: 320px;">
-                        <div class="card card-glass overflow-hidden">
-                            <div class="position-relative" style="height: 128px;">
-                                @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
-                                {
-                                    <img src="@eventItem.ImageUrl" alt="@eventItem.Title" class="w-100 h-100" style="object-fit: cover;">
-                                }
-                                <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-t from-black bg-opacity-60"></div>
-                                <div class="position-absolute bottom-0 start-0 text-white p-3">
-                                    <div class="fw-medium">@eventItem.Title</div>
-                                    <div class="small opacity-90">@eventItem.Date.ToString("MMM dd, yyyy")</div>
+                    @if (count < 5)
+                    {
+                        <div class="flex-shrink-0" style="width: 320px;">
+                            <div class="card card-glass overflow-hidden">
+                                <div class="position-relative" style="height: 128px;">
+                                    @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                                    {
+                                        <img src="@eventItem.ImageUrl" alt="@eventItem.Title" class="w-100 h-100" style="object-fit: cover;">
+                                    }
+                                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-t from-black bg-opacity-60"></div>
+                                    <div class="position-absolute bottom-0 start-0 text-white p-3">
+                                        <div class="fw-medium">@eventItem.Title</div>
+                                        <div class="small opacity-90">@eventItem.Date.ToString("MMM dd, yyyy")</div>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="small text-muted">@eventItem.Location</div>
+                                    <div class="small text-muted">@eventItem.Organization</div>
                                 </div>
                             </div>
-                            <div class="p-3">
-                                <div class="small text-muted">@eventItem.Location</div>
-                                <div class="small text-muted">@eventItem.Organization</div>
-                            </div>
                         </div>
-                    </div>
+                    }
+                    count++;
                 }
             }
         </div>
@@ -204,212 +192,164 @@
 </section>
 
 <!-- How It Works Section -->
-<section id="how-it-works" class="py-5 border-top">
+<section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="h2 fw-semibold mb-3">How It Works</h2>
-            <p class="text-muted">Get started in three simple steps</p>
+            <p class="text-muted">Simple steps to discover and attend amazing events</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center">
-                    <span class="h3 fw-bold text-primary">1</span>
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i class="bi bi-search text-primary fs-2"></i>
                 </div>
-                <h3 class="h4 fw-semibold mb-2">Browse & Discover</h3>
-                <p class="text-muted">Explore events by category, date, or organization</p>
+                <h4 class="fw-semibold mb-2">1. Discover</h4>
+                <p class="text-muted">Browse through hundreds of campus events and find what interests you</p>
             </div>
             <div class="col-md-4 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center">
-                    <span class="h3 fw-bold text-primary">2</span>
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i class="bi bi-ticket-perforated text-primary fs-2"></i>
                 </div>
-                <h3 class="h4 fw-semibold mb-2">Claim Tickets</h3>
-                <p class="text-muted">Reserve your spot with free or paid tickets</p>
+                <h4 class="fw-semibold mb-2">2. Claim</h4>
+                <p class="text-muted">Get your free ticket with a simple click and receive a QR code</p>
             </div>
             <div class="col-md-4 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center">
-                    <span class="h3 fw-bold text-primary">3</span>
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i class="bi bi-check-circle text-primary fs-2"></i>
                 </div>
-                <h3 class="h4 fw-semibold mb-2">Check-In with QR</h3>
-                <p class="text-muted">Present your digital ticket for seamless entry</p>
+                <h4 class="fw-semibold mb-2">3. Attend</h4>
+                <p class="text-muted">Show your QR code at the event and enjoy the experience</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Featured Organizations Section -->
-<section class="py-5 border-top">
+<section class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="h2 fw-semibold mb-2">Featured Organizations</h2>
-            <p class="text-muted">Trusted by leading campus groups</p>
-        </div>
-        <div class="d-flex gap-4 overflow-auto pb-4">
-            @{
-                var organizations = new[]
-                {
-                    new { name = "Student Union", logo = "🎓" },
-                    new { name = "CompSci Society", logo = "💻" },
-                    new { name = "Athletics Club", logo = "🏃" },
-                    new { name = "Drama Society", logo = "🎭" },
-                    new { name = "Film Society", logo = "🎬" },
-                    new { name = "Environmental Club", logo = "🌱" },
-                    new { name = "Literary Society", logo = "📚" },
-                    new { name = "Volunteer Club", logo = "🤝" }
-                };
-            }
-            @foreach (var org in organizations)
-            {
-                <div class="flex-shrink-0 d-flex flex-column align-items-center gap-3 p-4 rounded border bg-white hover-bg-light transition-colors" style="min-width: 150px;">
-                    <div class="fs-1">@org.logo</div>
-                    <div class="small fw-medium text-center">@org.name</div>
-                </div>
-            }
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="py-5 border-top">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="h2 fw-semibold mb-2">What Students Say</h2>
-            <p class="text-muted">Real experiences from our community</p>
+            <h2 class="h2 fw-semibold mb-3">Featured Organizations</h2>
+            <p class="text-muted">Trusted by leading campus organizations</p>
         </div>
         <div class="row g-4">
-            @{
-                var testimonials = new[]
-                {
-                    new { name = "Sarah Chen", role = "Computer Science", avatar = "SC", quote = "The platform made it so easy to discover tech talks and networking events. I've met amazing people and learned so much!" },
-                    new { name = "Marcus Johnson", role = "Business", avatar = "MJ", quote = "As an organizer, the analytics dashboard helps me understand what events work best. The QR check-in is seamless!" },
-                    new { name = "Elena Rodriguez", role = "Arts", avatar = "ER", quote = "I love how I can save events to my calendar and get reminders. Never missed an important event since using this platform." }
-                };
-            }
-            @foreach (var testimonial in testimonials)
-            {
-                <div class="col-md-4">
-                    <div class="p-4 rounded border bg-white hover-scale-105 transition">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="w-10 h-10 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center small fw-medium">
-                                @testimonial.avatar
-                            </div>
-                            <div>
-                                <div class="fw-medium">@testimonial.name</div>
-                                <div class="small text-muted">@testimonial.role</div>
-                            </div>
-                        </div>
-                        <p class="text-muted fst-italic">&ldquo;@testimonial.quote&rdquo;</p>
-                    </div>
+            <div class="col-md-3 col-6 text-center">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <span class="fs-2">🎓</span>
                 </div>
-            }
-        </div>
-    </div>
-</section>
-
-<!-- Categories Section -->
-<section class="py-5 border-top">
-    <div class="container">
-        <h2 class="h2 fw-semibold mb-4">Browse by category</h2>
-        <div class="d-flex flex-wrap gap-2">
-            @{
-                var categories = new[] { "Academic", "Social", "Sports", "Arts", "Technology", "Career", "Cultural", "Volunteer" };
-            }
-            @foreach (var category in categories)
-            {
-                <a href="/Events?category=@category" class="btn btn-outline-primary rounded-pill">@category</a>
-            }
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="py-5 border-top bg-gradient-to-br from-primary bg-opacity-5">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="h2 fw-semibold mb-3">Ready to join?</h2>
-            <p class="text-muted mb-4">Start discovering amazing campus events today</p>
-            <div class="d-flex gap-3 justify-content-center">
-                <a href="/Events" class="btn btn-primary btn-lg">
-                    <i class="bi bi-calendar3 me-2"></i>Browse Events
-                </a>
-                <a href="/Account/Register" class="btn btn-outline-primary btn-lg">
-                    <i class="bi bi-person-plus me-2"></i>Sign Up
-                </a>
+                <h6 class="fw-semibold">Student Union</h6>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <span class="fs-2">🎨</span>
+                </div>
+                <h6 class="fw-semibold">Arts Society</h6>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <span class="fs-2">⚽</span>
+                </div>
+                <h6 class="fw-semibold">Sports Club</h6>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <span class="fs-2">💻</span>
+                </div>
+                <h6 class="fw-semibold">Tech Society</h6>
             </div>
         </div>
     </div>
 </section>
 
-<style>
-/* Additional styles for animations and effects */
-.hover-bg-light:hover {
-    background-color: var(--bs-light) !important;
-}
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="h2 fw-semibold mb-3">What Students Say</h2>
+            <p class="text-muted">Real experiences from our community</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-glass h-100">
+                    <div class="card-body text-center">
+                        <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="bi bi-person text-primary"></i>
+                        </div>
+                        <p class="card-text fst-italic">"This platform made it so easy to discover events I never knew existed. The QR code check-in is genius!"</p>
+                        <h6 class="fw-semibold">Sarah M.</h6>
+                        <small class="text-muted">Computer Science</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100">
+                    <div class="card-body text-center">
+                        <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="bi bi-person text-primary"></i>
+                        </div>
+                        <p class="card-text fst-italic">"As an organizer, this platform has streamlined our event management. Highly recommend!"</p>
+                        <h6 class="fw-semibold">Alex K.</h6>
+                        <small class="text-muted">Event Organizer</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100">
+                    <div class="card-body text-center">
+                        <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="bi bi-person text-primary"></i>
+                        </div>
+                        <p class="card-text fst-italic">"The interface is beautiful and intuitive. I've attended more events this semester than ever before."</p>
+                        <h6 class="fw-semibold">Maria L.</h6>
+                        <small class="text-muted">Business</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-.hover-scale-105:hover {
-    transform: scale(1.05);
-}
+<!-- Category Browse Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="h2 fw-semibold mb-3">Browse by Category</h2>
+            <p class="text-muted">Find events that match your interests</p>
+        </div>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="/Events?category=Academic" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-book me-2"></i>Academic
+            </a>
+            <a href="/Events?category=Social" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-people me-2"></i>Social
+            </a>
+            <a href="/Events?category=Sports" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-trophy me-2"></i>Sports
+            </a>
+            <a href="/Events?category=Arts" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-palette me-2"></i>Arts
+            </a>
+            <a href="/Events?category=Technology" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-laptop me-2"></i>Technology
+            </a>
+            <a href="/Events?category=Culture" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-globe me-2"></i>Culture
+            </a>
+        </div>
+    </div>
+</section>
 
-.transition-colors {
-    transition: background-color 0.3s ease;
-}
-
-.transition {
-    transition: all 0.3s ease;
-}
-
-.w-16 {
-    width: 4rem;
-}
-
-.h-16 {
-    height: 4rem;
-}
-
-.w-10 {
-    width: 2.5rem;
-}
-
-.h-10 {
-    height: 2.5rem;
-}
-
-.bg-gradient-to-br {
-    background: linear-gradient(to bottom right, var(--bs-primary), var(--bs-primary));
-}
-
-.bg-gradient-to-r {
-    background: linear-gradient(to right, var(--bs-primary), var(--bs-primary));
-}
-
-.bg-gradient-to-t {
-    background: linear-gradient(to top, var(--bs-primary), transparent);
-}
-
-.from-black {
-    --tw-gradient-from: #000;
-}
-
-.bg-opacity-60 {
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-.bg-opacity-10 {
-    background-color: rgba(var(--bs-primary-rgb), 0.1);
-}
-
-.bg-opacity-5 {
-    background-color: rgba(var(--bs-primary-rgb), 0.05);
-}
-
-.overflow-auto::-webkit-scrollbar {
-    display: none;
-}
-
-.flex-shrink-0 {
-    flex-shrink: 0;
-}
-
-.fst-italic {
-    font-style: italic;
-}
-</style>
+<!-- Call to Action Section -->
+<section class="py-5 bg-gradient-to-r from-primary to-info text-white">
+    <div class="container text-center">
+        <h2 class="h2 fw-semibold mb-3">Ready to Get Started?</h2>
+        <p class="lead mb-4">Join thousands of students discovering amazing campus events</p>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+            <a href="/Account/Register" class="btn btn-light btn-lg px-5 py-3">
+                <i class="bi bi-person-plus me-2"></i>Create Account
+            </a>
+            <a href="/Events" class="btn btn-outline-light btn-lg px-5 py-3">
+                <i class="bi bi-calendar3 me-2"></i>Browse Events
+            </a>
+        </div>
+    </div>
+</section>

@@ -19,26 +19,42 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Get featured events (upcoming events with good attendance)
-        var featuredEvents = await _context.Events
-            .Where(e => e.Date >= DateTime.Today)
-            .OrderBy(e => e.Date)
-            .Take(6)
-            .ToListAsync();
+        try
+        {
+            // Get featured events (upcoming events with good attendance)
+            var featuredEvents = await _context.Events
+                .Where(e => e.Date >= DateTime.Today)
+                .OrderBy(e => e.Date)
+                .Take(6)
+                .ToListAsync();
 
-        // Get event statistics
-        var totalEvents = await _context.Events.CountAsync();
-        var upcomingEvents = await _context.Events.CountAsync(e => e.Date >= DateTime.Today);
-        var totalTickets = await _context.Tickets.CountAsync();
-        var totalUsers = await _context.Users.CountAsync();
+            // Get event statistics
+            var totalEvents = await _context.Events.CountAsync();
+            var upcomingEvents = await _context.Events.CountAsync(e => e.Date >= DateTime.Today);
+            var totalTickets = await _context.Tickets.CountAsync();
+            var totalUsers = await _context.Users.CountAsync();
 
-        ViewBag.FeaturedEvents = featuredEvents;
-        ViewBag.TotalEvents = totalEvents;
-        ViewBag.UpcomingEvents = upcomingEvents;
-        ViewBag.TotalTickets = totalTickets;
-        ViewBag.TotalUsers = totalUsers;
+            ViewBag.FeaturedEvents = featuredEvents;
+            ViewBag.TotalEvents = totalEvents;
+            ViewBag.UpcomingEvents = upcomingEvents;
+            ViewBag.TotalTickets = totalTickets;
+            ViewBag.TotalUsers = totalUsers;
 
-        return View();
+            return View();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in HomeController.Index");
+            
+            // Fallback values
+            ViewBag.FeaturedEvents = new List<Event>();
+            ViewBag.TotalEvents = 0;
+            ViewBag.UpcomingEvents = 0;
+            ViewBag.TotalTickets = 0;
+            ViewBag.TotalUsers = 0;
+            
+            return View();
+        }
     }
 
     public IActionResult Privacy()
